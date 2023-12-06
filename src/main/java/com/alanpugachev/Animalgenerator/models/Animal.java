@@ -9,9 +9,12 @@ import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 @AllArgsConstructor
 @Setter
@@ -21,38 +24,17 @@ public class Animal {
     private String description;
 
     public Animal() {
-        /* for kind */
-        try (FileChannel fileChannel = (FileChannel) Files.newByteChannel(Paths.get("src/main/resources/Animals.txt"))) {
-            MappedByteBuffer byteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
-            StringBuilder kind = new StringBuilder();
+        try {
+            Path animalsPath = Paths.get("src/main/resources/Animals.txt");
+            Path descriptionsPath = Paths.get("src/main/resources/Descriptions.txt");
 
-            /*
-            Random rand = new Random(0);
-            int position = rand.nextInt(byteBuffer.capacity());
-            */
+            List<String> allAnimals = Files.readAllLines(animalsPath);
+            List<String> allDescriptions = Files.readAllLines(descriptionsPath);
 
-
-            for (int i = 0; i < byteBuffer.capacity(); i++) {
-                kind.append((char) byteBuffer.get());
-            }
-
-            this.kindOfAnimal = String.valueOf(kind);
+            this.kindOfAnimal = allAnimals.get(new Random().nextInt(allAnimals.size()));
+            this.description = allDescriptions.get(new Random().nextInt(allDescriptions.size()));
         } catch (IOException e) {
-            throw new RuntimeException("Cannot read file with animals kind");
-        }
-
-        /* for description */
-        try (FileChannel fileChannel = (FileChannel) Files.newByteChannel(Paths.get("src/main/resources/Descriptions.txt"))) {
-            MappedByteBuffer byteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
-            StringBuilder description = new StringBuilder();
-
-            for (int i = 0; i < byteBuffer.capacity(); i++) {
-                description.append((char) byteBuffer.get());
-            }
-
-            this.description = String.valueOf(description);
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot read file with animals description");
+            System.out.println("Cannot open animals/descriptions file");
         }
     }
 }

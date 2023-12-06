@@ -1,1 +1,16 @@
 Elephant
+Lion
+Tiger
+Monkey
+Wolf
+Bear
+Fox
+Hare
+Dog
+Cat
+Rabbit
+Hamster
+Fish
+Bird
+Dolphin
+Cow
