@@ -1,7 +1,8 @@
 package com.alanpugachev.Animalgenerator.controllers;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Service;
+import com.alanpugachev.Animalgenerator.models.Animal;
+import com.alanpugachev.Animalgenerator.services.Converter;
+import lombok.AllArgsConstructor;
 
 import java.io.IOException;
 import java.nio.*;
@@ -10,27 +11,17 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-@Service
-public class Generator implements Creatable {
+@AllArgsConstructor
+public class Generator implements Runnable {
+    private int amountOfAnimals;
 
     @Override
-    public void generate() {
+    public void run() {
+        Converter animalConverter = new Converter();
 
-    }
-
-    public void writeIntoFile () {
-        try (FileChannel fileChannel = (FileChannel) Files.newByteChannel(Paths.get("gen.txt"),
-                StandardOpenOption.WRITE, StandardOpenOption.CREATE)) {
-            ByteBuffer byteBuffer = ByteBuffer.allocate(26);
-
-            for (int i = 0; i < byteBuffer.capacity(); i++) {
-                byteBuffer.put((byte) i);
-            }
-
-            byteBuffer.rewind();
-            fileChannel.write(byteBuffer);
-        } catch (IOException e) {
-            System.out.println(e);
+        for (int i = 0; i < this.amountOfAnimals; i++) {
+            Animal animal = new Animal();
+            animalConverter.writeAnAnimal(animal);
         }
     }
 }
