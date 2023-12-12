@@ -11,7 +11,7 @@ public class AnimalGeneratorApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AnimalGeneratorApplication.class, args);
 
-		Thread thread1 = new Thread(new Generator(5));
+		Thread thread1 = new Thread(new Generator(2));
 		Thread thread2 = new Thread(new Generator(5));
 
 		thread1.start();

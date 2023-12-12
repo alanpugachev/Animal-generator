@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,9 +25,12 @@ public class Converter implements Writer {
 
             FileChannel fileChannel = (FileChannel) Files.newByteChannel(Paths.get(name + ".txt"),
                     StandardOpenOption.WRITE, StandardOpenOption.CREATE);
-            ByteBuffer byteBuffer = ByteBuffer.allocate(
-                    (int) animal.getKindOfAnimal().length() + animal.getDescription().length()
-            );
+
+            ByteBuffer byteBuffer = ByteBuffer.allocate((int) animal.getKindOfAnimal().length() + animal.getDescription().length() + 1);
+
+            byteBuffer.put(animal.getKindOfAnimal().getBytes());
+            byteBuffer.put("\n".getBytes());
+            byteBuffer.put(animal.getDescription().getBytes());
 
             byteBuffer.rewind();
             //fileChannel.write(byteBuffer);
